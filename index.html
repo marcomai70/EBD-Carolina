@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Frequência - Escola Dominical</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Frequência Trimestral - Escola Dominical</h1>
+    <p>Classe: Jovens por Cristo</p>
+  </header>
+
+  <main>
+    <form id="frequenciaForm">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Presença</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaAlunos"></tbody>
+      </table>
+    </form>
+
+    <section id="resumo">
+      <h2>Resumo da Classe</h2>
+
+      <div class="campo">
+        <label for="totalMatriculados">Total Matriculados:</label>
+        <input type="number" id="totalMatriculados" readonly value="19">
+      </div>
+
+      <div class="campo">
+        <label for="presentes">Presentes:</label>
+        <input type="number" id="presentes" readonly>
+      </div>
+
+      <div class="campo">
+        <label for="visitantes">Visitantes:</label>
+        <input type="number" id="visitantes" value="0" min="0">
+      </div>
+
+      <div class="campo">
+        <label for="revistas">Revistas:</label>
+        <input type="number" id="revistas" value="0" min="0">
+      </div>
+
+      <div class="campo">
+        <label for="biblias">Bíblias:</label>
+        <input type="number" id="biblias" value="0" min="0">
+      </div>
+
+      <div class="campo">
+        <label for="oferta">Oferta (R$):</label>
+        <input type="number" id="oferta" step="0.01" value="0.00" min="0">
+      </div>
+    </section>
+    <div id="acoes">
+  <button id="btnExportar">Exportar para Excel</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="script.js"></script>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Escola Dominical V. Carolina</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
