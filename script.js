@@ -102,3 +102,25 @@ function exportarParaExcel() {
 
 // Evento do botão
 document.getElementById("btnExportar").addEventListener("click", exportarParaExcel);
+// === Exibir data atual no cabeçalho ===
+function mostrarDataAtual() {
+  const elemento = document.getElementById("dataAtual");
+  const hoje = new Date();
+
+  // Formata a data em dd/mm/aaaa
+  const dataFormatada = hoje.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
+
+  // Descobre o dia da semana
+  const dias = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+  const diaSemana = dias[hoje.getDay()];
+
+  elemento.textContent = `📅 Data: ${dataFormatada} (${diaSemana})`;
+}
+
+// Atualiza ao carregar a página
+window.addEventListener("load", mostrarDataAtual);
+
