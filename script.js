@@ -123,4 +123,3 @@ function mostrarDataAtual() {
 
 // Atualiza ao carregar a página
 window.addEventListener("load", mostrarDataAtual);
-
