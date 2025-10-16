@@ -3,81 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Controle de Frequência - Escola Dominical</title>
+  <title>Controle de Frequência - EBD</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>4º Trimestre - Escola Dominical</h1>
-    <p>Classe: Jovens por Cristo</p>
-    <p id="dataAtual"></p>
-  </header>
+  <!-- Página de Seleção de Classes -->
+  <div id="pagina-selecao">
+    <header>
+      <h1>Escola Dominical - Controle de Frequência</h1>
+      <h2>Selecione sua classe</h2>
+    </header>
 
-  <main>
-    <form id="frequenciaForm">
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Presença</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaAlunos"></tbody>
-      </table>
-    </form>
-    
-    <!-- Nova seção para inclusão de visitantes -->
-    <section id="secao-visitantes">
-      <h2>Visitantes</h2>
-      <form id="form-visitante">
-        <input type="text" id="nomeVisitante" placeholder="Nome do visitante" required>
-        <button type="submit" id="btnIncluir">Incluir</button>
-      </form>
-      <div id="lista-visitantes"></div>
-    </section>
-
-    <section id="resumo">
-      <h2>Resumo da Classe</h2>
-
-      <div class="campo">
-        <label for="totalMatriculados">Total Matriculados:</label>
-        <input type="number" id="totalMatriculados" readonly value="19">
+    <div class="classes-grid">
+      <div class="classe-card" data-classe="Jovens">
+        <h2>Jovens por Cristo</h2>
+        <p>Classe de jovens</p>
       </div>
-
-      <div class="campo">
-        <label for="presentes">Presentes:</label>
-        <input type="number" id="presentes" readonly>
+      
+      <div class="classe-card" data-classe="Evangelista">
+        <h2>Evangelista</h2>
+        <p>Classe evangelística</p>
       </div>
-
-      <div class="campo">
-        <label for="visitantes">Visitantes:</label>
-        <input type="number" id="visitantes" readonly value="0">
+      
+      <div class="classe-card" data-classe="Irmãos">
+        <h2>Irmãos</h2>
+        <p>Classe masculina</p>
       </div>
-
-      <div class="campo">
-        <label for="revistas">Revistas:</label>
-        <input type="number" id="revistas" value="" min="0">
+      
+      <div class="classe-card" data-classe="Irmãs">
+        <h2>Irmãs</h2>
+        <p>Classe feminina</p>
       </div>
-
-      <div class="campo">
-        <label for="biblias">Bíblias:</label>
-        <input type="number" id="biblias" value="" min="0">
-      </div>
-
-      <div class="campo">
-        <label for="oferta">Oferta (R$):</label>
-        <input type="number" id="oferta" step="0.01" value="" min="0">
-      </div>
-    </section>
-    
-    <div id="acoes">
-      <button id="btnExportar">Exportar para Excel</button>
     </div>
-  </main>
 
-  <footer>
-    <p>&copy; 2025 Escola Dominical Vl Carolina</p>
-  </footer>
+    <footer>
+      <p>&copy; 2025 EBD Vila Carolina</p>
+    </footer>
+  </div>
+
+  <!-- Aplicativo Principal (inicialmente oculto) -->
+  <div id="pagina-app" style="display: none;">
+    <header>
+      <h1>4º Trimestre - Escola Dominical</h1>
+      <p id="nomeClasse">Carregando...</p>
+      <p id="dataAtual"></p>
+      <a href="#" id="btnVoltar" style="color: #feffcc; text-decoration: none;">← Voltar para seleção de classes</a>
+    </header>
+
+    <main>
+      <form id="frequenciaForm">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Presença</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaAlunos"></tbody>
+        </table>
+      </form>
+      
+      <section id="secao-visitantes">
+        <h2>Visitantes</h2>
+        <form id="form-visitante">
+          <input type="text" id="nomeVisitante" placeholder="Nome do visitante" required>
+          <button type="submit" id="btnIncluir">Incluir</button>
+        </form>
+        <div id="lista-visitantes"></div>
+      </section>
+
+      <section id="resumo">
+        <h2>Resumo da Classe</h2>
+
+        <div class="campo">
+          <label for="totalMatriculados">Total Matriculados:</label>
+          <input type="number" id="totalMatriculados" readonly>
+        </div>
+
+        <div class="campo">
+          <label for="presentes">Presentes:</label>
+          <input type="number" id="presentes" readonly>
+        </div>
+
+        <div class="campo">
+          <label for="visitantes">Visitantes:</label>
+          <input type="number" id="visitantes" readonly value="0">
+        </div>
+
+        <div class="campo">
+          <label for="revistas">Revistas:</label>
+          <input type="number" id="revistas" value="0" min="0">
+        </div>
+
+        <div class="campo">
+          <label for="biblias">Bíblias:</label>
+          <input type="number" id="biblias" value="0" min="0">
+        </div>
+
+        <div class="campo">
+          <label for="oferta">Oferta (R$):</label>
+          <input type="number" id="oferta" step="0.01" value="0.00" min="0">
+        </div>
+      </section>
+      
+      <div id="acoes">
+        <button id="btnExportar">Exportar para Excel</button>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 EBD Vila Carolina</p>
+    </footer>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="script.js"></script>
