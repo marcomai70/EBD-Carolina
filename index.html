@@ -8,7 +8,7 @@
 </head>
 <body>
   <header>
-    <h1> 4º Trimestre - Escola Dominical</h1>
+    <h1>4º Trimestre - Escola Dominical</h1>
     <p>Classe: Jovens por Cristo</p>
     <p id="dataAtual"></p>
   </header>
@@ -25,6 +25,16 @@
         <tbody id="tabelaAlunos"></tbody>
       </table>
     </form>
+    
+    <!-- Nova seção para inclusão de visitantes -->
+    <section id="secao-visitantes">
+      <h2>Visitantes</h2>
+      <form id="form-visitante">
+        <input type="text" id="nomeVisitante" placeholder="Nome do visitante" required>
+        <button type="submit" id="btnIncluir">Incluir</button>
+      </form>
+      <div id="lista-visitantes"></div>
+    </section>
 
     <section id="resumo">
       <h2>Resumo da Classe</h2>
@@ -41,7 +51,7 @@
 
       <div class="campo">
         <label for="visitantes">Visitantes:</label>
-        <input type="number" id="visitantes" value="0" min="0">
+        <input type="number" id="visitantes" readonly value="0">
       </div>
 
       <div class="campo">
@@ -59,18 +69,17 @@
         <input type="number" id="oferta" step="0.01" value="0.00" min="0">
       </div>
     </section>
+    
     <div id="acoes">
-  <button id="btnExportar">Exportar para Excel</button>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="script.js"></script>
-
+      <button id="btnExportar">Exportar para Excel</button>
+    </div>
   </main>
 
   <footer>
     <p>&copy; 2025 Escola Dominical V. Carolina</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

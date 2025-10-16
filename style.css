@@ -47,6 +47,7 @@ button {
 button:hover {
   background: #2ecc71;
 }
+
 #resumo {
   margin-top: 2rem;
   background: #f0f4f8;
@@ -83,6 +84,81 @@ button:hover {
   width: 100%;
 }
 
+/* Estilos para a seção de visitantes */
+#secao-visitantes {
+  margin-top: 2rem;
+  background: #f0f4f8;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+#secao-visitantes h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#form-visitante {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#form-visitante input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+#btnIncluir {
+  padding: 8px 16px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 20px; /* Bordas mais arredondadas */
+  cursor: pointer;
+  font-size: 14px;
+  width: 120px; /* Tamanho menor */
+  white-space: nowrap;
+}
+
+#btnIncluir:hover {
+  background: #2980b9;
+}
+
+#lista-visitantes {
+  margin-top: 15px;
+}
+
+.visitante-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: white;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  border-left: 4px solid #3498db;
+}
+
+.btn-remover {
+  padding: 6px 12px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 20px; /* Bordas mais arredondadas igual ao botão incluir */
+  cursor: pointer;
+  font-size: 12px;
+  width: 80px; /* Tamanho menor */
+  white-space: nowrap;
+}
+
+.btn-remover:hover {
+  background: #2980b9;
+}
+
 @media (max-width: 600px) {
   .campo {
     flex-direction: column;
@@ -91,6 +167,25 @@ button:hover {
   .campo input {
     width: 100%;
     text-align: left;
+  }
+  
+  #form-visitante {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  #btnIncluir {
+    width: auto;
+  }
+  
+  .visitante-item {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .btn-remover {
+    align-self: flex-end;
   }
 }
 

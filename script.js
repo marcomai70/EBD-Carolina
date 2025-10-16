@@ -23,6 +23,9 @@ const alunos = [
   "VITÓRIA KELLY"
 ];
 
+// Array para armazenar os visitantes
+let visitantes = [];
+
 // Monta tabela de presença
 const tabela = document.getElementById("tabelaAlunos");
 alunos.forEach(aluno => {
@@ -41,22 +44,75 @@ const visitantesInput = document.getElementById("visitantes");
 
 // Atualiza automaticamente
 function atualizarPresentes() {
-  const visitantes = parseInt(visitantesInput.value) || 0;
   const checkboxes = document.querySelectorAll(".chk-pres");
   const presentesMarcados = Array.from(checkboxes).filter(chk => chk.checked).length;
-  const totalPresentes = presentesMarcados + visitantes;
+  const totalPresentes = presentesMarcados + visitantes.length;
   presentesInput.value = totalPresentes;
+  visitantesInput.value = visitantes.length;
 }
 
-// Monitora mudanças em presenças e visitantes
+// Monitora mudanças em presenças
 document.addEventListener("change", (e) => {
-  if (e.target.classList.contains("chk-pres") || e.target.id === "visitantes") {
+  if (e.target.classList.contains("chk-pres")) {
     atualizarPresentes();
   }
 });
 
+// Função para adicionar visitante
+function adicionarVisitante(nome) {
+  visitantes.push(nome);
+  atualizarListaVisitantes();
+  atualizarPresentes();
+}
+
+// Função para remover visitante
+function removerVisitante(index) {
+  visitantes.splice(index, 1);
+  atualizarListaVisitantes();
+  atualizarPresentes();
+}
+
+// Atualiza a lista de visitantes na interface
+function atualizarListaVisitantes() {
+  const lista = document.getElementById("lista-visitantes");
+  lista.innerHTML = '';
+  
+  visitantes.forEach((visitante, index) => {
+    const item = document.createElement("div");
+    item.className = "visitante-item";
+    item.innerHTML = `
+      <span>${visitante}</span>
+      <button class="btn-remover" data-index="${index}">Remover</button>
+    `;
+    lista.appendChild(item);
+  });
+  
+  // Adiciona eventos aos botões de remover
+  document.querySelectorAll(".btn-remover").forEach(btn => {
+    btn.addEventListener("click", function() {
+      const index = parseInt(this.getAttribute("data-index"));
+      removerVisitante(index);
+    });
+  });
+}
+
+// Evento do formulário de visitantes
+document.getElementById("form-visitante").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const nomeInput = document.getElementById("nomeVisitante");
+  const nome = nomeInput.value.trim();
+  
+  if (nome) {
+    adicionarVisitante(nome);
+    nomeInput.value = '';
+  }
+});
+
 // Atualiza ao carregar
-window.addEventListener("load", atualizarPresentes);
+window.addEventListener("load", function() {
+  atualizarPresentes();
+  mostrarDataAtual();
+});
 
 // Função para coletar dados e exportar para Excel
 function exportarParaExcel() {
@@ -65,7 +121,7 @@ function exportarParaExcel() {
   // Coleta as informações do resumo
   const totalMatriculados = document.getElementById("totalMatriculados").value;
   const presentes = document.getElementById("presentes").value;
-  const visitantes = document.getElementById("visitantes").value;
+  const visitantesCount = visitantes.length;
   const revistas = document.getElementById("revistas").value;
   const biblias = document.getElementById("biblias").value;
   const oferta = document.getElementById("oferta").value;
@@ -78,12 +134,21 @@ function exportarParaExcel() {
     linhas.push([nome, presente]);
   });
 
+  // Adiciona linha em branco
+  linhas.push([]);
+  
+  // Adiciona a lista de visitantes
+  linhas.push(["Visitantes", ""]);
+  visitantes.forEach(visitante => {
+    linhas.push([visitante, "Presente"]);
+  });
+  
   // Adiciona o resumo no final
   linhas.push([]);
   linhas.push(["Data", dataAtual]);
   linhas.push(["Total Matriculados", totalMatriculados]);
   linhas.push(["Presentes", presentes]);
-  linhas.push(["Visitantes", visitantes]);
+  linhas.push(["Visitantes", visitantesCount]);
   linhas.push(["Revistas", revistas]);
   linhas.push(["Bíblias", biblias]);
   linhas.push(["Oferta (R$)", oferta]);
@@ -102,6 +167,7 @@ function exportarParaExcel() {
 
 // Evento do botão
 document.getElementById("btnExportar").addEventListener("click", exportarParaExcel);
+
 // === Exibir data atual no cabeçalho ===
 function mostrarDataAtual() {
   const elemento = document.getElementById("dataAtual");
@@ -120,6 +186,3 @@ function mostrarDataAtual() {
 
   elemento.textContent = `📅 Data: ${dataFormatada} (${diaSemana})`;
 }
-
-// Atualiza ao carregar a página
-window.addEventListener("load", mostrarDataAtual);
