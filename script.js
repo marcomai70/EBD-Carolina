@@ -6,70 +6,95 @@ const configClasses = {
       "ANA CAROLINA",
       "CLARA REGINA G. DA SILVA",
       "DARLENE ALVES DA SILVA",
-      "DOUGLAS SANTOS DA SILVA",
-      "FELIPE RACCHANICCI",
+      "EMANUEL BERNADRO"
+      "FELIPE RACHANICCI",
       "GERSON BENTO VIEIRA",
+      "GERSON DE O. BENTO VIEIRA FILHO",
       "IAGO AUGUSTO",
       "YOHAN GABRIEL",
       "JÉSSICA GOMES DE OLIVEIRA",
-      "JÉSSIKA DE JESUS SANTOS",
-      "LUCAS",
+      "KAIO SAMPAIO",
+      "LUCAS Passos",
       "MARCOS MAIA",
       "MARIANA RODRIGUES TRINDADE",
       "NICOLE LOUZADA DE ALMEIDA",
-      "PAMELA",
       "RODRIGO BRASILEIRO",
       "SAMUEL PEREIRA FERREIRA DE LIMA",
+      "STEPHANIE MELO",
       "TIAGO MUSSATO",
       "URIAS RODRIGUES TRINDADE",
-      "VALESKA DA SILVA",
-      "VITÓRIA KELLY"
+      "VALESKA DA SILVA"
     ]
   },
-  "Evangelista": {
+  "Adolescentes": {
     nome: "Classe Evangelista",
     alunos: [
-      "ALUNO 1 EVANGELISTA",
-      "ALUNO 2 EVANGELISTA",
-      "ALUNO 3 EVANGELISTA"
-      // Adicione os nomes reais aqui
+     "AGATHA GONÇALVES VIEIRA",
+     "ARTHUR PEREIRA FERREIRA DE LIMA",
+     "FELIPE CARDOSO VIEIRA ",
+     "GABRIEL PEREIRA FERREIRA DE LIMA",
+     "IGOR OLIVEIRA SANTANA",
+     "ISABELLA CONCEIÇÃO DA SILVA",
+     "JOÃO PEDRO LINS DE ANDRADE",
+     "KAUÊ AGUIAR RANGEL",
+     "LUCAS SOARES AS SILVA",
+     "MARIA CLARA ALVES DA COSTA",
+     "MARIA EDUARDA ROSA",
+     "PEDRO HENRIQUE L. DE ANDRADE",
+     "PRISCILA BENTO VIEIRA",
+     "TIAGO BENTO VIEIRA",
+     "VANESSA ROCHA DE SOUZA SIQUEIRA",
+     "VICTOR LUCAS MELO AMADEU"
     ]
   },
   "Irmãos": {
-    nome: "Classe Irmãos",
+    nome: "Classe Daniel",
     alunos: [
-      "Anderson Silva", 
-      "Aloisio",
-      "Claudio Ferreira",
-      "Edson Silva",
-      "Denilson Amadeu",
-      "Lucio Trindade",
-      "Jose Gomes",
-      "Rubens Maciel",
-      "Josué Viturino",
-      "Renato Santos",
-      "Sidney Vieira",
-      "Adriano Silva"
-      // Adicione os nomes reais aqui
+      "ADRIANO DA SILVA",
+      "ADRIANO GONÇALVES ROSA",
+      "ALUISIO FRANCISCO DE MOURA",
+      "ANDERSON COSTA",
+      "CICERO CARLOS DA SILVA",
+      "DENILSON PAES AMADEU",
+      "EDELUCIO TRINDADE",
+      "EDUARDO CANDIDO PINTO",
+      "EMERSON BENTO VIEIRA",
+      "JANILTON PEREIRA FERREIRA",
+      "JOSE GOMES",
+      "LUIS CARLOS FERREIRA",
+      "MOISÉS VALENTIM DOS SANTOS",
+      "OSEAS CUSTÓDIO",
+      "PAULO MACIEL",
+      "RENATO SANTOS SIQUEIRA",
+      "RODRIGO BATISTA FERNANDES",
+      "SAMUEL GONÇALVES F. DE SOUZA",
+      "SIDNEI DONIZETE BENTO VIEIRA"
     ]
   },
   "Irmãs": {
-    nome: "Classe Irmãs", 
+    nome: "Classe Noemi", 
     alunos: [
-      "Claudia Silva",
-      "Ana Beatriz",
-      "Fernanda Lima",
-      "Juliana Souza",
-      "Vanda Silva",
-      "Tatiane Oliveira",
-      "Esther Gomes",
-      "Josefa Santos",
-      "Jacira Lima",
-      "Marcia Pereira",
-      "Sonia Maria",
-      "Rosana Silva"
-      // Adicione os nomes reais aqui
-    ]
+      "ARLEIDE RIBEIRO RAMOS",
+      "CLÁUDIA MARIA DE OLIVEIRA SILVA",
+      "CRISTINA CLAUDIA FERREIRA",
+      "JACIARA MARINHO DOS SANTOS",
+      "JACIRA DA S. GOMES OLIVEIRA",
+      "JAQUELINE VITAL",
+      "JULIANE DE SOUZA BENTO VIEIRA",
+      "ISABEL ALVES",
+      "LAODICEIA R. DE PAIVA",
+      "LEONILDE G. TAVARES DA SILVA",
+      "MARIA CARMELINA FERREIRA SILVA",
+      "MARIA ERMELINDA FRIZANCO VIEIRA",
+      "MARIA ISABEL SILVEIRA VIEIRA",
+      "MARIA SULAMITA AGUIAR",
+      "NEIDE MOURA",
+      "PRISCILA GOMES",
+      "SIMONE CONCEIÇÃO DE ASSIS",
+      "SOLEMAR PORTELA S. FERNANDES",
+      "THAIS ALVES DA SILVA",
+      "VALÉRIA CRISTINA LEANDRO",
+      "VIVIANE PATRÍCIA DOS S. SOARES"    ]
   }
 };
 
@@ -80,13 +105,17 @@ let visitantes = [];
 // Elementos da página
 const paginaSelecao = document.getElementById('pagina-selecao');
 const paginaApp = document.getElementById('pagina-app');
+const modalConfirmacao = document.getElementById('modalConfirmacao');
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('Página carregada - Inicializando...');
+  
   // Eventos para seleção de classes
   document.querySelectorAll('.classe-card').forEach(card => {
     card.addEventListener('click', function() {
       const classe = this.getAttribute('data-classe');
+      console.log('Classe selecionada:', classe);
       iniciarApp(classe);
     });
   });
@@ -94,10 +123,31 @@ document.addEventListener('DOMContentLoaded', function() {
   // Evento do botão voltar
   document.getElementById('btnVoltar').addEventListener('click', function(e) {
     e.preventDefault();
+    console.log('Voltando para seleção...');
     voltarParaSelecao();
   });
 
+  // Eventos do modal
+  document.querySelector('.close').addEventListener('click', fecharModalELimpar);
+  document.getElementById('btnFecharModal').addEventListener('click', fecharModalELimpar);
+  
+  // Evento do formulário de visitantes
+  document.getElementById("form-visitante").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const nomeInput = document.getElementById("nomeVisitante");
+    const nome = nomeInput.value.trim();
+    
+    if (nome) {
+      adicionarVisitante(nome);
+      nomeInput.value = '';
+    }
+  });
+
+  // Evento do botão exportar
+  document.getElementById("btnExportar").addEventListener("click", exportarParaExcel);
+
   mostrarDataAtual();
+  console.log('Inicialização concluída');
 });
 
 // Função para iniciar o app com uma classe específica
@@ -109,6 +159,8 @@ function iniciarApp(classe) {
     alert('Classe não encontrada!');
     return;
   }
+
+  console.log('Iniciando app para classe:', config.nome);
 
   // Atualizar interface
   document.getElementById('nomeClasse').textContent = `Classe: ${config.nome}`;
@@ -123,6 +175,8 @@ function iniciarApp(classe) {
   // Mostrar app e esconder seleção
   paginaSelecao.style.display = 'none';
   paginaApp.style.display = 'block';
+  
+  console.log('App iniciado com sucesso');
 }
 
 // Função para voltar para seleção
@@ -256,18 +310,6 @@ function atualizarListaVisitantes() {
   });
 }
 
-// Evento do formulário de visitantes
-document.getElementById("form-visitante").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const nomeInput = document.getElementById("nomeVisitante");
-  const nome = nomeInput.value.trim();
-  
-  if (nome) {
-    adicionarVisitante(nome);
-    nomeInput.value = '';
-  }
-});
-
 // Salvar outros dados no localStorage
 document.getElementById('revistas').addEventListener('change', salvarDados);
 document.getElementById('biblias').addEventListener('change', salvarDados);
@@ -337,10 +379,48 @@ function exportarParaExcel() {
 
   // Faz o download
   XLSX.writeFile(wb, nomeArquivo);
+  
+  // Mostrar modal de confirmação simples
+  mostrarModalConfirmacao();
 }
 
-// Evento do botão exportar
-document.getElementById("btnExportar").addEventListener("click", exportarParaExcel);
+// Mostrar modal de confirmação
+function mostrarModalConfirmacao() {
+  modalConfirmacao.style.display = 'block';
+}
+
+// Fechar modal e limpar campos
+function fecharModalELimpar() {
+  modalConfirmacao.style.display = 'none';
+  limparCampos();
+}
+
+// Limpar todos os campos para novo registro
+function limparCampos() {
+  if (!classeAtual) return;
+  
+  // Limpar checkboxes de presença
+  document.querySelectorAll('.chk-pres').forEach(checkbox => {
+    checkbox.checked = false;
+  });
+  
+  // Limpar visitantes
+  visitantes = [];
+  localStorage.removeItem(`visitantes_${classeAtual}`);
+  atualizarListaVisitantes();
+  
+  // Limpar campos numéricos
+  document.getElementById('revistas').value = 0;
+  document.getElementById('biblias').value = 0;
+  document.getElementById('oferta').value = '0.00';
+  
+  // Limpar dados do localStorage
+  localStorage.removeItem(`dados_${classeAtual}`);
+  localStorage.removeItem(`presencas_${classeAtual}`);
+  
+  // Atualizar totais
+  atualizarPresentes();
+}
 
 // === Exibir data atual no cabeçalho ===
 function mostrarDataAtual() {

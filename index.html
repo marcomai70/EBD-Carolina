@@ -15,23 +15,23 @@
     </header>
 
     <div class="classes-grid">
-      <div class="classe-card" data-classe="Jovens">
+      <div class="classe-card" data-classe="Jovens por Cristo">
         <h2>Jovens por Cristo</h2>
         <p>Classe de jovens</p>
       </div>
       
       <div class="classe-card" data-classe="Evangelista">
         <h2>Evangelista</h2>
-        <p>Classe evangelística</p>
+        <p>Classe de adolescentes
       </div>
       
-      <div class="classe-card" data-classe="Irmãos">
-        <h2>Irmãos</h2>
+      <div class="classe-card" data-classe="Daniel">
+        <h2>Daniel</h2>
         <p>Classe masculina</p>
       </div>
       
-      <div class="classe-card" data-classe="Irmãs">
-        <h2>Irmãs</h2>
+      <div class="classe-card" data-classe="Noemi">
+        <h2>Noemi</h2>
         <p>Classe feminina</p>
       </div>
     </div>
@@ -107,13 +107,45 @@
       </section>
       
       <div id="acoes">
-        <button id="btnExportar">Exportar para Excel</button>
+        <button id="btnExportar">Enviar Relatório para secretaria</button>
       </div>
     </main>
 
     <footer>
       <p>&copy; 2025 EBD Vila Carolina</p>
     </footer>
+  </div>
+
+  <!-- Modal de Confirmação -->
+  <div id="modalConfirmacao" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="modal-icon">✅</div>
+      <h2>Relatório Gerado!</h2>
+      
+      <div id="conteudo-android" class="dispositivo-conteudo">
+        <p>📁 <strong>Arquivo Excel baixado!</strong></p>
+        <p>Agora compartilhe pelo WhatsApp com a secretaria.</p>
+      </div>
+      
+      <div id="conteudo-ios" class="dispositivo-conteudo">
+        <p>📎 <strong>Arquivo pronto para compartilhar!</strong></p>
+        <button id="btnCompartilharIOS" class="btn-whatsapp">
+          📤 Compartilhar Arquivo
+        </button>
+      </div>
+      
+      <div id="conteudo-fallback" class="dispositivo-conteudo">
+        <p>📊 <strong>Relatório gerado com sucesso!</strong></p>
+        <button id="btnDownloadManual" class="btn-whatsapp">
+          ⬇️ Fazer Download
+        </button>
+      </div>
+
+      <div class="modal-botoes">
+        <button id="btnFecharModal" class="btn-sucesso">Fechar e Limpar</button>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
