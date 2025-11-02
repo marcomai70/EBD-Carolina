@@ -1,4 +1,4 @@
-// Configuração das classes
+// Configuração das classes - CORRIGIDO
 const configClasses = {
   "Jovens": {
     nome: "Jovens por Cristo",
@@ -6,7 +6,7 @@ const configClasses = {
       "ANA CAROLINA",
       "CLARA REGINA G. DA SILVA",
       "DARLENE ALVES DA SILVA",
-      "EMANUEL BERNADRO"
+      "EMANUEL BERNADRO",
       "FELIPE RACHANICCI",
       "GERSON BENTO VIEIRA",
       "GERSON DE O. BENTO VIEIRA FILHO",
@@ -14,7 +14,7 @@ const configClasses = {
       "YOHAN GABRIEL",
       "JÉSSICA GOMES DE OLIVEIRA",
       "KAIO SAMPAIO",
-      "LUCAS Passos",
+      "LUCAS PASSOS",
       "MARCOS MAIA",
       "MARIANA RODRIGUES TRINDADE",
       "NICOLE LOUZADA DE ALMEIDA",
@@ -27,24 +27,24 @@ const configClasses = {
     ]
   },
   "Adolescentes": {
-    nome: "Classe Evangelista",
+    nome: "Classe Adolescentes",
     alunos: [
-     "AGATHA GONÇALVES VIEIRA",
-     "ARTHUR PEREIRA FERREIRA DE LIMA",
-     "FELIPE CARDOSO VIEIRA ",
-     "GABRIEL PEREIRA FERREIRA DE LIMA",
-     "IGOR OLIVEIRA SANTANA",
-     "ISABELLA CONCEIÇÃO DA SILVA",
-     "JOÃO PEDRO LINS DE ANDRADE",
-     "KAUÊ AGUIAR RANGEL",
-     "LUCAS SOARES AS SILVA",
-     "MARIA CLARA ALVES DA COSTA",
-     "MARIA EDUARDA ROSA",
-     "PEDRO HENRIQUE L. DE ANDRADE",
-     "PRISCILA BENTO VIEIRA",
-     "TIAGO BENTO VIEIRA",
-     "VANESSA ROCHA DE SOUZA SIQUEIRA",
-     "VICTOR LUCAS MELO AMADEU"
+      "AGATHA GONÇALVES VIEIRA",
+      "ARTHUR PEREIRA FERREIRA DE LIMA",
+      "FELIPE CARDOSO VIEIRA",
+      "GABRIEL PEREIRA FERREIRA DE LIMA",
+      "IGOR OLIVEIRA SANTANA",
+      "ISABELLA CONCEIÇÃO DA SILVA",
+      "JOÃO PEDRO LINS DE ANDRADE",
+      "KAUÊ AGUIAR RANGEL",
+      "LUCAS SOARES AS SILVA",
+      "MARIA CLARA ALVES DA COSTA",
+      "MARIA EDUARDA ROSA",
+      "PEDRO HENRIQUE L. DE ANDRADE",
+      "PRISCILA BENTO VIEIRA",
+      "TIAGO BENTO VIEIRA",
+      "VANESSA ROCHA DE SOUZA SIQUEIRA",
+      "VICTOR LUCAS MELO AMADEU"
     ]
   },
   "Irmãos": {
@@ -94,9 +94,46 @@ const configClasses = {
       "SOLEMAR PORTELA S. FERNANDES",
       "THAIS ALVES DA SILVA",
       "VALÉRIA CRISTINA LEANDRO",
-      "VIVIANE PATRÍCIA DOS S. SOARES"    ]
+      "VIVIANE PATRÍCIA DOS S. SOARES"
+    ]
+  },
+  "JardimInfancia": {
+    nome: "Jardim de Infância (04 e 06 anos)",
+    alunos: [
+      "ARTHUR TADEU",
+      "AYLA",
+      "ESTER PEREIRA",
+      "GIOVANA TAVARES",
+      "GUILHERME",
+      "HEITOR",
+      "ISAAC",
+      "JOÃO MIGUEL",
+      "LETICIA ZEGALI VIEIRA",
+      "LUCCA",
+      "LUIS OTÁVIO",
+      "MAJU",
+      "MANUELA LOURENÇO",
+      "SOPHIA"
+    ]
+  },
+  "Juniores": {
+    nome: "Juniores (09 e 10 anos)",
+    alunos: [
+      "ARTHUR MACIEL",
+      "DANIEL",
+      "HELENA LINS",
+      "ISABELLI NERI",
+      "ISRAEL ALVES COSTA",
+      "MARIA EDUARDA RACANICCHI",
+      "MILENA",
+      "PIETRO MACIEL",
+      "RAUL DE MOURA",
+      "SOPHIE",
+      "VANESSA GABRIELA"
+    ]
   }
 };
+
 
 // Variáveis globais
 let classeAtual = null;
@@ -146,9 +183,55 @@ document.addEventListener('DOMContentLoaded', function() {
   // Evento do botão exportar
   document.getElementById("btnExportar").addEventListener("click", exportarParaExcel);
 
+// NOVO: Eventos para limpar zeros ao focar nos campos
+  document.getElementById('revistas').addEventListener('focus', limparZero);
+  document.getElementById('biblias').addEventListener('focus', limparZero);
+  document.getElementById('oferta').addEventListener('focus', limparZeroOferta);
+
+  // NOVO: Eventos para restaurar zero se campo ficar vazio
+  document.getElementById('revistas').addEventListener('blur', restaurarZero);
+  document.getElementById('biblias').addEventListener('blur', restaurarZero);
+  document.getElementById('oferta').addEventListener('blur', restaurarZeroOferta);
+
+
   mostrarDataAtual();
   console.log('Inicialização concluída');
 });
+
+
+// NOVAS FUNÇÕES PARA MELHORAR USABILIDADE
+
+// Limpa o zero quando o campo recebe foco
+function limparZero(event) {
+  const input = event.target;
+  if (input.value === '0' || input.value === '0.00') {
+    input.value = '';
+  }
+}
+
+// Limpa o zero específico para oferta (formato decimal)
+function limparZeroOferta(event) {
+  const input = event.target;
+  if (input.value === '0.00') {
+    input.value = '';
+  }
+}
+
+// Restaura zero se campo ficar vazio
+function restaurarZero(event) {
+  const input = event.target;
+  if (input.value === '' || input.value === '0') {
+    input.value = '0';
+  }
+}
+
+// Restaura zero específico para oferta
+function restaurarZeroOferta(event) {
+  const input = event.target;
+  if (input.value === '' || input.value === '0') {
+    input.value = '0.00';
+  }
+}
 
 // Função para iniciar o app com uma classe específica
 function iniciarApp(classe) {
