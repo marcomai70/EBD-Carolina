@@ -519,17 +519,34 @@ function mostrarDataAtual() {
   elemento.textContent = `📅 Data: ${dataFormatada} (${diaSemana})`;
 }
 
-// ========== PWA CONFIGURATION -  ========== //
+// ========== PWA CONFIGURATION - GITHUB PAGES COMPATIBLE ========== //
 
-// Registrar Service Worker para PWA - VERSÃO SEGURA
+// Detectar o caminho base do projeto
+function getBasePath() {
+  const path = window.location.pathname;
+  if (path.includes('/EBD-Carolina/')) {
+    return '/EBD-Carolina/';
+  }
+  return '/';
+}
+
+// Detectar se está rodando como PWA
+function isStandalone() {
+  return (window.navigator.standalone === true) || 
+         (window.matchMedia('(display-mode: standalone)').matches);
+}
+
+// Registrar Service Worker para PWA - VERSÃO GITHUB PAGES
 if ('serviceWorker' in navigator) {
-  // Aguarda a aplicação carregar completamente
   window.addEventListener('load', function() {
-    // Timeout para não interferir com o carregamento principal
+    const basePath = getBasePath();
+    const swPath = basePath + 'service-worker.js';
+    
     setTimeout(function() {
-      navigator.serviceWorker.register('/service-worker.js')
+      navigator.serviceWorker.register(swPath)
         .then(function(registration) {
           console.log('✅ Service Worker registrado com sucesso:', registration.scope);
+          console.log('📍 Base path:', basePath);
         })
         .catch(function(error) {
           console.log('❌ Falha ao registrar Service Worker:', error);
@@ -538,61 +555,62 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Verificação simples do PWA - sem conflitos
-setTimeout(function() {
-  console.log('🔍 PWA configurado - App funcionando normalmente');
-}, 3000);
+// ========== CORREÇÃO PARA iOS ========== //
 
-// ========== CORREÇÃO PARA iOS - ADICIONAR NO FINAL DO script.js ========== //
+// Aplicar correções específicas para iOS PWA
+function aplicarCorrecoesIOS() {
+  if (isStandalone()) {
+    console.log('📱 Rodando como PWA no iOS - Aplicando correções');
+    
+    // Verificar se precisa redirecionar para a URL correta
+    if (window.location.search.indexOf('source=pwa') === -1) {
+      const basePath = getBasePath();
+      const newUrl = window.location.origin + basePath + '?source=pwa';
+      if (window.location.href !== newUrl) {
+        console.log('🔄 iOS: Corrigindo URL para evitar duplicação');
+        window.history.replaceState(null, null, newUrl);
+      }
+    }
 
-// Detectar se está rodando como PWA no iOS
-function isStandaloneIOS() {
-  return (window.navigator.standalone === true) || 
-         (window.matchMedia('(display-mode: standalone)').matches);
-}
+    // Prevenir abertura em nova instância no iOS
+    document.querySelectorAll('a[href="/"], a[href^="."]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        if (isStandalone()) {
+          e.preventDefault();
+          const basePath = getBasePath();
+          window.location.href = basePath + '?source=pwa';
+        }
+      });
+    });
 
-// Correção para iOS abrir na mesma instância
-if (isStandaloneIOS()) {
-  console.log('📱 Rodando como PWA no iOS - Aplicando correções');
-  
-  // Verificar se precisa redirecionar para a URL correta
-  if (window.location.search.indexOf('source=pwa') === -1) {
-    // Se estiver faltando o parâmetro, adiciona para consistência
-    const newUrl = window.location.origin + '/?source=pwa';
-    if (window.location.href !== newUrl) {
-      console.log('🔄 iOS: Corrigindo URL para evitar duplicação');
-      window.history.replaceState(null, null, newUrl);
+    // Correção específica para o botão voltar no iOS
+    const btnVoltar = document.getElementById('btnVoltar');
+    if (btnVoltar) {
+      btnVoltar.addEventListener('click', function(e) {
+        if (isStandalone()) {
+          e.preventDefault();
+          const basePath = getBasePath();
+          window.history.replaceState(null, null, basePath + '?source=pwa');
+          voltarParaSelecao();
+        }
+      });
     }
   }
 }
 
-// Prevenir abertura em nova instância no iOS
+// Inicializar correções quando a aplicação estiver pronta
 document.addEventListener('DOMContentLoaded', function() {
-  // Encontrar todos os links que apontam para a própria aplicação
-  document.querySelectorAll('a[href="/"], a[href^="."]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      if (isStandaloneIOS()) {
-        e.preventDefault();
-        window.location.href = '/?source=pwa';
-      }
-    });
-  });
+  // Aguardar um pouco para garantir que a aplicação principal carregou
+  setTimeout(function() {
+    aplicarCorrecoesIOS();
+    
+    // Logs para debug
+    console.log('🔍 GitHub Pages - Configuração PWA carregada');
+    console.log('📍 URL atual:', window.location.href);
+    console.log('📁 Caminho base:', getBasePath());
+    console.log('📱 Modo PWA:', isStandalone() ? 'Standalone' : 'Navegador');
+    console.log('🔍 PWA configurado - App funcionando normalmente');
+  }, 1000);
 });
 
-// Correção específica para o botão voltar no iOS
-document.addEventListener('DOMContentLoaded', function() {
-  const btnVoltar = document.getElementById('btnVoltar');
-  if (btnVoltar && isStandaloneIOS()) {
-    btnVoltar.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Usar replaceState para evitar criar nova entrada no histórico
-      window.history.replaceState(null, null, '/?source=pwa');
-      voltarParaSelecao();
-    });
-  }
-});
-
-// Log para debug do modo PWA
-console.log('🔍 Modo PWA:', isStandaloneIOS() ? 'Standalone' : 'Navegador');
-console.log('📍 URL atual:', window.location.href);
 
