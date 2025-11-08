@@ -27,7 +27,7 @@ const configClasses = {
     ]
   },
   "Adolescentes": {
-    nome: "Classe Adolescentes",
+    nome: "Evangelistas",
     alunos: [
       "AGATHA GONÇALVES VIEIRA",
       "ARTHUR PEREIRA FERREIRA DE LIMA",
@@ -519,7 +519,7 @@ function mostrarDataAtual() {
   elemento.textContent = `📅 Data: ${dataFormatada} (${diaSemana})`;
 }
 
-// ========== PWA CONFIGURATION - ADICIONAR NO FINAL ========== //
+// ========== PWA CONFIGURATION -  ========== //
 
 // Registrar Service Worker para PWA - VERSÃO SEGURA
 if ('serviceWorker' in navigator) {
