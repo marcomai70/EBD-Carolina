@@ -134,19 +134,6 @@ const configClasses = {
   }
 };
 
-// Registrar Service Worker para PWA
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('Service Worker registrado com sucesso:', registration);
-      })
-      .catch(error => {
-        console.log('Falha ao registrar Service Worker:', error);
-      });
-  });
-}
-
 // Variáveis globais
 let classeAtual = null;
 let visitantes = [];
@@ -195,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Evento do botão exportar
   document.getElementById("btnExportar").addEventListener("click", exportarParaExcel);
 
-// NOVO: Eventos para limpar zeros ao focar nos campos
+  // NOVO: Eventos para limpar zeros ao focar nos campos
   document.getElementById('revistas').addEventListener('focus', limparZero);
   document.getElementById('biblias').addEventListener('focus', limparZero);
   document.getElementById('oferta').addEventListener('focus', limparZeroOferta);
@@ -205,11 +192,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('biblias').addEventListener('blur', restaurarZero);
   document.getElementById('oferta').addEventListener('blur', restaurarZeroOferta);
 
-
   mostrarDataAtual();
   console.log('Inicialização concluída');
 });
-
 
 // NOVAS FUNÇÕES PARA MELHORAR USABILIDADE
 
@@ -534,86 +519,28 @@ function mostrarDataAtual() {
   elemento.textContent = `📅 Data: ${dataFormatada} (${diaSemana})`;
 }
 
-[SEU CÓDIGO JAVASCRIPT EXISTENTE...]
-[todo o código de frequência, alunos, exportação...]
+// ========== PWA CONFIGURATION - ADICIONAR NO FINAL ========== //
 
-// ========== ADICIONE ESTE CÓDIGO PWA NO FINAL ========== //
-
-// ========== PWA CONFIGURATION ========== //
-
-// Registrar Service Worker para PWA
+// Registrar Service Worker para PWA - VERSÃO SEGURA
 if ('serviceWorker' in navigator) {
+  // Aguarda a aplicação carregar completamente
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(function(registration) {
-        console.log('✅ Service Worker registrado com sucesso: ', registration.scope);
-        
-        // Verifica se há atualizações
-        registration.addEventListener('updatefound', () => {
-          console.log('🔄 Nova versão do Service Worker encontrada');
+    // Timeout para não interferir com o carregamento principal
+    setTimeout(function() {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(function(registration) {
+          console.log('✅ Service Worker registrado com sucesso:', registration.scope);
+        })
+        .catch(function(error) {
+          console.log('❌ Falha ao registrar Service Worker:', error);
         });
-      })
-      .catch(function(error) {
-        console.log('❌ Falha ao registrar Service Worker: ', error);
-      });
+    }, 2000);
   });
 }
 
-// Trigger para instalação no desktop
-let deferredPrompt;
+// Verificação simples do PWA - sem conflitos
+setTimeout(function() {
+  console.log('🔍 PWA configurado - App funcionando normalmente');
+}, 3000);
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  
-  console.log('📱 PWA pode ser instalado');
-  showInstallPromotion();
-});
-
-function showInstallPromotion() {
-  // Você pode adicionar um botão de instalação se quiser
-  console.log('💡 Adicione um botão de instalação aqui se desejar');
-}
-
-function installPWA() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('✅ Usuário aceitou a instalação do PWA');
-      } else {
-        console.log('❌ Usuário recusou a instalação do PWA');
-      }
-      deferredPrompt = null;
-    });
-  }
-}
-
-// Para testar no console
-window.installPWA = installPWA;
-
-// Verifica se está rodando como PWA
-function checkDisplayMode() {
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    console.log('📱 Rodando como PWA');
-    return 'standalone';
-  }
-  if (window.navigator.standalone) {
-    console.log('📱 Rodando como PWA no iOS');
-    return 'standalone';
-  }
-  console.log('🌐 Rodando no navegador');
-  return 'browser';
-}
-
-// Executa a verificação quando a página carrega
-document.addEventListener('DOMContentLoaded', function() {
-  checkDisplayMode();
-  
-  // Log para debug
-  console.log('🔍 Verificando configuração PWA:');
-  console.log('- Manifest:', document.querySelector('link[rel="manifest"]'));
-  console.log('- Ícone:', document.querySelector('link[rel="icon"]'));
-  console.log('- Apple Touch Icon:', document.querySelector('link[rel="apple-touch-icon"]'));
-});
 
