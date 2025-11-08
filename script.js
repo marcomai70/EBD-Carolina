@@ -543,4 +543,56 @@ setTimeout(function() {
   console.log('🔍 PWA configurado - App funcionando normalmente');
 }, 3000);
 
+// ========== CORREÇÃO PARA iOS - ADICIONAR NO FINAL DO script.js ========== //
+
+// Detectar se está rodando como PWA no iOS
+function isStandaloneIOS() {
+  return (window.navigator.standalone === true) || 
+         (window.matchMedia('(display-mode: standalone)').matches);
+}
+
+// Correção para iOS abrir na mesma instância
+if (isStandaloneIOS()) {
+  console.log('📱 Rodando como PWA no iOS - Aplicando correções');
+  
+  // Verificar se precisa redirecionar para a URL correta
+  if (window.location.search.indexOf('source=pwa') === -1) {
+    // Se estiver faltando o parâmetro, adiciona para consistência
+    const newUrl = window.location.origin + '/?source=pwa';
+    if (window.location.href !== newUrl) {
+      console.log('🔄 iOS: Corrigindo URL para evitar duplicação');
+      window.history.replaceState(null, null, newUrl);
+    }
+  }
+}
+
+// Prevenir abertura em nova instância no iOS
+document.addEventListener('DOMContentLoaded', function() {
+  // Encontrar todos os links que apontam para a própria aplicação
+  document.querySelectorAll('a[href="/"], a[href^="."]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      if (isStandaloneIOS()) {
+        e.preventDefault();
+        window.location.href = '/?source=pwa';
+      }
+    });
+  });
+});
+
+// Correção específica para o botão voltar no iOS
+document.addEventListener('DOMContentLoaded', function() {
+  const btnVoltar = document.getElementById('btnVoltar');
+  if (btnVoltar && isStandaloneIOS()) {
+    btnVoltar.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Usar replaceState para evitar criar nova entrada no histórico
+      window.history.replaceState(null, null, '/?source=pwa');
+      voltarParaSelecao();
+    });
+  }
+});
+
+// Log para debug do modo PWA
+console.log('🔍 Modo PWA:', isStandaloneIOS() ? 'Standalone' : 'Navegador');
+console.log('📍 URL atual:', window.location.href);
 
