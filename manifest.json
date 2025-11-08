@@ -1,0 +1,26 @@
+{
+  "name": "EBD Vila Carolina",
+  "short_name": "EBD App",
+  "description": "Aplicativo para frequência de Escola Bíblica Dominical",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3870b7",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "Imagens/icon4EBD192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Imagens/icon4EBD512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+
