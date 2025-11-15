@@ -143,120 +143,46 @@ const paginaSelecao = document.getElementById('pagina-selecao');
 const paginaApp = document.getElementById('pagina-app');
 const modalConfirmacao = document.getElementById('modalConfirmacao');
 
-// Inicialização
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Página carregada - Inicializando...');
-  
-  // Eventos para seleção de classes
-  document.querySelectorAll('.classe-card').forEach(card => {
-    card.addEventListener('click', function() {
-      const classe = this.getAttribute('data-classe');
-      console.log('Classe selecionada:', classe);
-      iniciarApp(classe);
-    });
-  });
+// ========== FUNÇÕES PRINCIPAIS DA APLICAÇÃO ========== //
 
-  // Evento do botão voltar
-  document.getElementById('btnVoltar').addEventListener('click', function(e) {
-    e.preventDefault();
-    console.log('Voltando para seleção...');
-    voltarParaSelecao();
-  });
-
-  // Eventos do modal
-  document.querySelector('.close').addEventListener('click', fecharModalELimpar);
-  document.getElementById('btnFecharModal').addEventListener('click', fecharModalELimpar);
-  
-  // Evento do formulário de visitantes
-  document.getElementById("form-visitante").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const nomeInput = document.getElementById("nomeVisitante");
-    const nome = nomeInput.value.trim();
-    
-    if (nome) {
-      adicionarVisitante(nome);
-      nomeInput.value = '';
-    }
-  });
-
-  // Evento do botão exportar
-  document.getElementById("btnExportar").addEventListener("click", exportarParaExcel);
-
-  // NOVO: Eventos para limpar zeros ao focar nos campos
-  document.getElementById('revistas').addEventListener('focus', limparZero);
-  document.getElementById('biblias').addEventListener('focus', limparZero);
-  document.getElementById('oferta').addEventListener('focus', limparZeroOferta);
-
-  // NOVO: Eventos para restaurar zero se campo ficar vazio
-  document.getElementById('revistas').addEventListener('blur', restaurarZero);
-  document.getElementById('biblias').addEventListener('blur', restaurarZero);
-  document.getElementById('oferta').addEventListener('blur', restaurarZeroOferta);
-
-  mostrarDataAtual();
-  console.log('Inicialização concluída');
-});
-
-// NOVAS FUNÇÕES PARA MELHORAR USABILIDADE
-
-// Limpa o zero quando o campo recebe foco
-function limparZero(event) {
-  const input = event.target;
-  if (input.value === '0' || input.value === '0.00') {
-    input.value = '';
-  }
-}
-
-// Limpa o zero específico para oferta (formato decimal)
-function limparZeroOferta(event) {
-  const input = event.target;
-  if (input.value === '0.00') {
-    input.value = '';
-  }
-}
-
-// Restaura zero se campo ficar vazio
-function restaurarZero(event) {
-  const input = event.target;
-  if (input.value === '' || input.value === '0') {
-    input.value = '0';
-  }
-}
-
-// Restaura zero específico para oferta
-function restaurarZeroOferta(event) {
-  const input = event.target;
-  if (input.value === '' || input.value === '0') {
-    input.value = '0.00';
-  }
-}
-
-// Função para iniciar o app com uma classe específica
+// Função para iniciar o app com uma classe específica - VERSÃO MELHORADA
 function iniciarApp(classe) {
-  classeAtual = classe;
-  const config = configClasses[classe];
+  console.log('🚀 Iniciando app para classe:', classe);
   
-  if (!config) {
-    alert('Classe não encontrada!');
-    return;
+  try {
+    classeAtual = classe;
+    const config = configClasses[classe];
+    
+    if (!config) {
+      alert('Classe não encontrada!');
+      return;
+    }
+
+    // Forçar reflow para garantir a transição
+    paginaSelecao.style.display = 'none';
+    void paginaSelecao.offsetWidth; // Trigger reflow
+    
+    // Atualizar interface
+    document.getElementById('nomeClasse').textContent = `Classe: ${config.nome}`;
+    document.title = `${config.nome} - Controle de Frequência`;
+
+    // Carregar dados da classe
+    carregarDadosClasse();
+    
+    // Montar tabela de alunos
+    montarTabelaAlunos(config.alunos);
+    
+    // Mostrar app com timeout para garantir renderização
+    setTimeout(() => {
+      paginaApp.style.display = 'block';
+      console.log('✅ App iniciado com sucesso!');
+    }, 50);
+    
+  } catch (error) {
+    console.error('❌ Erro ao iniciar app:', error);
+    alert('Erro ao carregar a classe: ' + error.message);
+    paginaSelecao.style.display = 'block';
   }
-
-  console.log('Iniciando app para classe:', config.nome);
-
-  // Atualizar interface
-  document.getElementById('nomeClasse').textContent = `Classe: ${config.nome}`;
-  document.title = `${config.nome} - Controle de Frequência`;
-
-  // Carregar dados da classe
-  carregarDadosClasse();
-  
-  // Montar tabela de alunos
-  montarTabelaAlunos(config.alunos);
-  
-  // Mostrar app e esconder seleção
-  paginaSelecao.style.display = 'none';
-  paginaApp.style.display = 'block';
-  
-  console.log('App iniciado com sucesso');
 }
 
 // Função para voltar para seleção
@@ -519,7 +445,97 @@ function mostrarDataAtual() {
   elemento.textContent = `📅 Data: ${dataFormatada} (${diaSemana})`;
 }
 
-// ========== PWA CONFIGURATION - GITHUB PAGES COMPATIBLE ========== //
+// NOVAS FUNÇÕES PARA MELHORAR USABILIDADE
+
+// Limpa o zero quando o campo recebe foco
+function limparZero(event) {
+  const input = event.target;
+  if (input.value === '0' || input.value === '0.00') {
+    input.value = '';
+  }
+}
+
+// Limpa o zero específico para oferta (formato decimal)
+function limparZeroOferta(event) {
+  const input = event.target;
+  if (input.value === '0.00') {
+    input.value = '';
+  }
+}
+
+// Restaura zero se campo ficar vazio
+function restaurarZero(event) {
+  const input = event.target;
+  if (input.value === '' || input.value === '0') {
+    input.value = '0';
+  }
+}
+
+// Restaura zero específico para oferta
+function restaurarZeroOferta(event) {
+  const input = event.target;
+  if (input.value === '' || input.value === '0') {
+    input.value = '0.00';
+  }
+}
+
+// ========== INICIALIZAÇÃO PRINCIPAL ========== //
+
+// Inicialização única - SEM DUPLICAÇÃO
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('📱 Página carregada - Inicializando EBD App...');
+  
+  // Eventos para seleção de classes - VERSÃO COMPATÍVEL
+  document.querySelectorAll('.classe-card').forEach(card => {
+    // Evento único para todos os dispositivos
+    card.addEventListener('click', function() {
+      const classe = this.getAttribute('data-classe');
+      console.log('🎯 Clique detectado na classe:', classe);
+      iniciarApp(classe);
+    });
+  });
+
+  // Evento do botão voltar
+  document.getElementById('btnVoltar').addEventListener('click', function(e) {
+    e.preventDefault();
+    console.log('🔄 Voltando para seleção...');
+    voltarParaSelecao();
+  });
+
+  // Eventos do modal
+  document.querySelector('.close').addEventListener('click', fecharModalELimpar);
+  document.getElementById('btnFecharModal').addEventListener('click', fecharModalELimpar);
+  
+  // Evento do formulário de visitantes
+  document.getElementById("form-visitante").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const nomeInput = document.getElementById("nomeVisitante");
+    const nome = nomeInput.value.trim();
+    
+    if (nome) {
+      adicionarVisitante(nome);
+      nomeInput.value = '';
+    }
+  });
+
+  // Evento do botão exportar
+  document.getElementById("btnExportar").addEventListener("click", exportarParaExcel);
+
+  // Eventos para limpar zeros ao focar nos campos
+  document.getElementById('revistas').addEventListener('focus', limparZero);
+  document.getElementById('biblias').addEventListener('focus', limparZero);
+  document.getElementById('oferta').addEventListener('focus', limparZeroOferta);
+
+  // Eventos para restaurar zero se campo ficar vazio
+  document.getElementById('revistas').addEventListener('blur', restaurarZero);
+  document.getElementById('biblias').addEventListener('blur', restaurarZero);
+  document.getElementById('oferta').addEventListener('blur', restaurarZeroOferta);
+
+  mostrarDataAtual();
+  console.log('✅ Inicialização concluída - App pronto!');
+});
+
+// ========== PWA CONFIGURATION - SEGURO ========== //
 
 // Detectar o caminho base do projeto
 function getBasePath() {
@@ -536,12 +552,13 @@ function isStandalone() {
          (window.matchMedia('(display-mode: standalone)').matches);
 }
 
-// Registrar Service Worker para PWA - VERSÃO GITHUB PAGES
+// Registrar Service Worker para PWA - VERSÃO SEGURA
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     const basePath = getBasePath();
     const swPath = basePath + 'service-worker.js';
     
+    // Timeout para não interferir com o carregamento principal
     setTimeout(function() {
       navigator.serviceWorker.register(swPath)
         .then(function(registration) {
@@ -551,66 +568,39 @@ if ('serviceWorker' in navigator) {
         .catch(function(error) {
           console.log('❌ Falha ao registrar Service Worker:', error);
         });
-    }, 2000);
+    }, 3000);
   });
 }
 
-// ========== CORREÇÃO PARA iOS ========== //
+// ========== CORREÇÃO PARA DISPOSITIVOS MÓVEIS ========== //
 
-// Aplicar correções específicas para iOS PWA
-function aplicarCorrecoesIOS() {
+// Aplicar correções específicas para dispositivos móveis
+function aplicarCorrecoesMoveis() {
   if (isStandalone()) {
-    console.log('📱 Rodando como PWA no iOS - Aplicando correções');
+    console.log('📱 Rodando como PWA - Aplicando correções móveis');
     
     // Verificar se precisa redirecionar para a URL correta
     if (window.location.search.indexOf('source=pwa') === -1) {
       const basePath = getBasePath();
       const newUrl = window.location.origin + basePath + '?source=pwa';
       if (window.location.href !== newUrl) {
-        console.log('🔄 iOS: Corrigindo URL para evitar duplicação');
+        console.log('🔄 Corrigindo URL para evitar duplicação');
         window.history.replaceState(null, null, newUrl);
       }
     }
-
-    // Prevenir abertura em nova instância no iOS
-    document.querySelectorAll('a[href="/"], a[href^="."]').forEach(link => {
-      link.addEventListener('click', function(e) {
-        if (isStandalone()) {
-          e.preventDefault();
-          const basePath = getBasePath();
-          window.location.href = basePath + '?source=pwa';
-        }
-      });
-    });
-
-    // Correção específica para o botão voltar no iOS
-    const btnVoltar = document.getElementById('btnVoltar');
-    if (btnVoltar) {
-      btnVoltar.addEventListener('click', function(e) {
-        if (isStandalone()) {
-          e.preventDefault();
-          const basePath = getBasePath();
-          window.history.replaceState(null, null, basePath + '?source=pwa');
-          voltarParaSelecao();
-        }
-      });
-    }
   }
+  
+  // Logs para debug
+  console.log('🔍 EBD Carolina - Configuração completa');
+  console.log('📍 URL atual:', window.location.href);
+  console.log('📁 Caminho base:', getBasePath());
+  console.log('📱 Modo PWA:', isStandalone() ? 'Standalone' : 'Navegador');
+  console.log('📱 User Agent:', navigator.userAgent);
 }
 
-// Inicializar correções quando a aplicação estiver pronta
-document.addEventListener('DOMContentLoaded', function() {
-  // Aguardar um pouco para garantir que a aplicação principal carregou
-  setTimeout(function() {
-    aplicarCorrecoesIOS();
-    
-    // Logs para debug
-    console.log('🔍 GitHub Pages - Configuração PWA carregada');
-    console.log('📍 URL atual:', window.location.href);
-    console.log('📁 Caminho base:', getBasePath());
-    console.log('📱 Modo PWA:', isStandalone() ? 'Standalone' : 'Navegador');
-    console.log('🔍 PWA configurado - App funcionando normalmente');
-  }, 1000);
-});
-
+// Inicialização final segura
+setTimeout(function() {
+  aplicarCorrecoesMoveis();
+  console.log('🎉 EBD App totalmente carregado e funcionando!');
+}, 4000);
 
