@@ -3,7 +3,6 @@ const configClasses = {
   "Jovens": {
     nome: "Jovens por Cristo",
     alunos: [
-      "ANA CAROLINA",
       "CLARA REGINA G. DA SILVA",
       "DARLENE ALVES DA SILVA",
       "EMANUEL BERNADRO",
@@ -31,6 +30,7 @@ const configClasses = {
     alunos: [
       "AGATHA GONÇALVES VIEIRA",
       "ARTHUR PEREIRA FERREIRA DE LIMA",
+      "ARTHUR TRAJANO",
       "FELIPE CARDOSO VIEIRA",
       "GABRIEL PEREIRA FERREIRA DE LIMA",
       "IGOR OLIVEIRA SANTANA",
@@ -61,8 +61,10 @@ const configClasses = {
       "EMERSON BENTO VIEIRA",
       "JANILTON PEREIRA FERREIRA",
       "JOSE GOMES",
+      "LEONARDO EMERSON F. PIRES",
       "LUIS CARLOS FERREIRA",
       "MOISÉS VALENTIM DOS SANTOS",
+      "NILVAN PEREIRA DOS SANTOS", 
       "OSEAS CUSTÓDIO",
       "PAULO MACIEL",
       "RENATO SANTOS SIQUEIRA",
@@ -74,32 +76,38 @@ const configClasses = {
   "Irmãs": {
     nome: "Classe Noemi", 
     alunos: [
+      "APARECIDA PENTEADO DA SILVA",
       "ARLEIDE RIBEIRO RAMOS",
       "CLÁUDIA MARIA DE OLIVEIRA SILVA",
       "CRISTINA CLAUDIA FERREIRA",
       "JACIARA MARINHO DOS SANTOS",
       "JACIRA DA S. GOMES OLIVEIRA",
+      "JANE PEREIRA DA SILVA SANTOS ",
       "JAQUELINE VITAL",
       "JULIANE DE SOUZA BENTO VIEIRA",
       "ISABEL ALVES",
       "LAODICEIA R. DE PAIVA",
       "LEONILDE G. TAVARES DA SILVA",
+      "LUZIA BALTHAZAR DA SILVA ",
       "MARIA CARMELINA FERREIRA SILVA",
       "MARIA ERMELINDA FRIZANCO VIEIRA",
       "MARIA ISABEL SILVEIRA VIEIRA",
       "MARIA SULAMITA AGUIAR",
+      "MATILDE DA SILVA ",
       "NEIDE MOURA",
       "PRISCILA GOMES",
       "SIMONE CONCEIÇÃO DE ASSIS",
       "SOLEMAR PORTELA S. FERNANDES",
       "THAIS ALVES DA SILVA",
       "VALÉRIA CRISTINA LEANDRO",
+      "VILMA TRAJANO PIRES ",
       "VIVIANE PATRÍCIA DOS S. SOARES"
     ]
   },
   "JardimInfancia": {
     nome: "Jardim de Infância (04 e 06 anos)",
     alunos: [
+      "ALICE TRAJANO",
       "ARTHUR TADEU",
       "AYLA",
       "ESTER PEREIRA",
